@@ -32,8 +32,15 @@ SECTIONS
         *(.data .data.*)
     } :data
 
+    . += CONSTANT(MAXPAGESIZE);
+
     .bss : {
         *(COMMON)
         *(.bss .bss.*)
     } :data
+
+    /DISCARD/ : {
+        *(.eh_frame)
+        *(.note .note.*)
+    }
 }

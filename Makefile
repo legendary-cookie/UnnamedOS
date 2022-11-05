@@ -1,5 +1,5 @@
 .PHONY: all
-all: OS.iso
+all: build
 
 .PHONY: run
 run: OS.iso

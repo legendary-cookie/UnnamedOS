@@ -1,5 +1,6 @@
 #include <hal.hpp>
 
 extern "C" void kentry() {
-	hal::Halt();
+    hal::Initialize();
+    hal::Halt();
 }

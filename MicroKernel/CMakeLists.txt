@@ -15,6 +15,7 @@ include_directories(include)
 include_directories(deps/cxxshim/stage2/include)
 include_directories(deps/frigg/include)
 include_directories(hal/include)
+include_directories(hal/arch/${ARCH}/include)
 
 if("${ARCH}" STREQUAL "x86_64")
 	enable_language(ASM_NASM)
@@ -27,7 +28,8 @@ else()
 	message(FATAL_ERROR "Unsupported architecture ${ARCH}")
 endif()
 
-add_compile_options(-Wall -Wextra -fno-exceptions -fno-rtti)
+add_compile_options(-Wall -Wextra -fno-exceptions -fno-rtti -fno-stack-protector -O2)
+add_compile_options(-Wno-unused-parameter)
 add_compile_options(-ffreestanding -nostdlib)
 add_compile_options(-mno-mmx -mno-sse -mno-sse2 -mno-3dnow)
 add_compile_options(-mcmodel=kernel -mno-red-zone -fno-pic -fno-pie)
@@ -45,6 +47,11 @@ set(HAL_ARCH "hal/arch/${ARCH}")
 
 set(HAL_SRC_x86_64
 	${HAL_ARCH}/arch.cpp
+	${HAL_ARCH}/IDT.cpp
+	${HAL_ARCH}/IDT.asm
+	${HAL_ARCH}/GDT.cpp
+	${HAL_ARCH}/GDT.asm
+	${HAL_ARCH}/CPU.cpp
 )
 
 add_link_options(-static -z max-page-size=0x1000 -nostdlib)
