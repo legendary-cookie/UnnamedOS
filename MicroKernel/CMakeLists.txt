@@ -12,6 +12,8 @@ set(ARCH "x86_64")
 add_compile_options($<$<C_COMPILER_ID:Clang>:-fcolor-diagnostics>)
 
 include_directories(include)
+include_directories(deps/cxxshim/stage2/include)
+include_directories(deps/frigg/include)
 include_directories(hal/include)
 
 if("${ARCH}" STREQUAL "x86_64")
@@ -26,10 +28,9 @@ else()
 endif()
 
 add_compile_options(-Wall -Wextra -fno-exceptions -fno-rtti)
-add_compile_options(-Wno-write-strings -Wno-unused-parameter -Wno-sign-compare -Wno-deprecated-volatile -Wno-non-c-typedef-for-linkage)
 add_compile_options(-ffreestanding -nostdlib)
-add_compile_options(-mno-mmx -mno-sse -mno-sse2)
-add_compile_options(-mcmodel=large -mno-red-zone -fno-pic)
+add_compile_options(-mno-mmx -mno-sse -mno-sse2 -mno-3dnow)
+add_compile_options(-mcmodel=kernel -mno-red-zone -fno-pic -fno-pie)
 
 # Inline functions even with O0
 add_compile_options(-O0)
@@ -40,11 +41,13 @@ set(KERNEL_SRC
 	src/kernel.cpp
 )
 
+set(HAL_ARCH "hal/arch/${ARCH}")
+
 set(HAL_SRC_x86_64
-	hal/arch/x86_64/entry.asm
+	${HAL_ARCH}/arch.cpp
 )
 
-add_link_options(-z max-page-size=0x1000 -ffreestanding -nostdlib)
+add_link_options(-static -z max-page-size=0x1000 -nostdlib)
 
-add_executable(kernel.elf ${KERNEL_SRC} ${HAL_SRC_${ARCH}})
+add_executable(kernel.elf ${HAL_SRC_${ARCH}} ${KERNEL_SRC})
 target_link_options(kernel.elf PRIVATE -T ${CMAKE_CURRENT_SOURCE_DIR}/linkscript-${ARCH}.ld)

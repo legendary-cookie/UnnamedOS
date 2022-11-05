@@ -5,3 +5,4 @@ build/
 *.sys
 *.elf
 compile_commands.json
+.cache/
