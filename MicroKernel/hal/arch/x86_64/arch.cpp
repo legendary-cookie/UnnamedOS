@@ -23,7 +23,6 @@ void Initialize() {
     asm volatile("mov %0, %%rsp" ::"r"(stack + (PageSize::Size4K * 2))
                  : "memory");
 
-    GDT::Initialize(CPU::thisCpu()->gdt);
-    IDT::Initialize();
+    CPU::InitializeCpu();
 }
 }  // namespace hal

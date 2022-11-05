@@ -52,6 +52,7 @@ set(HAL_SRC_x86_64
 	${HAL_ARCH}/GDT.cpp
 	${HAL_ARCH}/GDT.asm
 	${HAL_ARCH}/CPU.cpp
+	${HAL_ARCH}/log.cpp
 )
 
 add_link_options(-static -z max-page-size=0x1000 -nostdlib)

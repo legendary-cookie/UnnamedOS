@@ -44,4 +44,11 @@ struct CpuData {
 };
 
 CpuData* thisCpu();
+
+/**
+ * Initialize current CPU.
+ * Sets GDT, TSS, IDT and starts cpu-local devices
+ */
+void InitializeCpu();
+
 }  // namespace hal::arch::CPU

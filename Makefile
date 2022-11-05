@@ -3,7 +3,7 @@ all: build
 
 .PHONY: run
 run: OS.iso
-	qemu-system-x86_64 -M q35 -m 512M -boot d -cdrom OS.iso
+	qemu-system-x86_64 -M q35 -m 512M -boot d -cdrom OS.iso -serial stdio
 
 .PHONY: build
 build:
