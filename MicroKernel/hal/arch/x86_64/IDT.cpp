@@ -1,5 +1,7 @@
 #include "IDT.hpp"
 
+#include <logger.hpp>
+
 #include "CPU.hpp"
 
 idt_entry_t idt[256];

@@ -4,7 +4,9 @@
 	branch = v4.x-branch-binary
 [submodule "MicroKernel/deps/cxxshim"]
 	path = MicroKernel/deps/cxxshim
-	url = https://github.com/managarm/cxxshim
+	url = https://github.com/legendary-cookie/cxxshim
 [submodule "MicroKernel/deps/frigg"]
 	path = MicroKernel/deps/frigg
 	url = https://github.com/managarm/frigg
+[submodule "deps/cxxshim/"]
+	url = https://github.com/legendary-cookie/cxxshim

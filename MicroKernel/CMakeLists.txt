@@ -12,6 +12,7 @@ set(ARCH "x86_64")
 add_compile_options($<$<C_COMPILER_ID:Clang>:-fcolor-diagnostics>)
 
 include_directories(include)
+include_directories(libk++/include)
 include_directories(deps/cxxshim/stage2/include)
 include_directories(deps/frigg/include)
 include_directories(hal/include)
@@ -43,6 +44,11 @@ set(KERNEL_SRC
 	src/kernel.cpp
 )
 
+set(LIBK_SRC
+	libk++/cstring.cpp
+	libk++/fmt.cpp
+)
+
 set(HAL_ARCH "hal/arch/${ARCH}")
 
 set(HAL_SRC_x86_64
@@ -52,10 +58,10 @@ set(HAL_SRC_x86_64
 	${HAL_ARCH}/GDT.cpp
 	${HAL_ARCH}/GDT.asm
 	${HAL_ARCH}/CPU.cpp
-	${HAL_ARCH}/log.cpp
+	${HAL_ARCH}/io.cpp
 )
 
 add_link_options(-static -z max-page-size=0x1000 -nostdlib)
 
-add_executable(kernel.elf ${HAL_SRC_${ARCH}} ${KERNEL_SRC})
+add_executable(kernel.elf ${LIBK_SRC} ${HAL_SRC_${ARCH}} ${KERNEL_SRC})
 target_link_options(kernel.elf PRIVATE -T ${CMAKE_CURRENT_SOURCE_DIR}/linkscript-${ARCH}.ld)
