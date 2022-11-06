@@ -9,6 +9,42 @@ idt_ptr_t idtPtr;
 
 isr_t interruptHandlers[256];
 
+
+static const char* exceptions[] = {
+    "Divide by Zero",
+    "Debug",
+    "NMI",
+    "Breakpoint",
+    "Overflow",
+    "Bound Range Exceeded",
+    "Invalid Opcode",
+    "Device not available",
+    "Double Fault",
+    "",
+    "Invalid TSS",
+    "Segment not present",
+    "Stack Segment fault",
+    "GPF",
+    "Page Fault",
+    "",
+    "x87 Floating point exception",
+    "Alignment check",
+    "Machine check",
+    "SIMD Floating point exception",
+    "Virtualization Exception",
+    "Control protection exception",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Hypervisor injection exception",
+    "VMM Communication exception",
+    "Security exception",
+    ""
+};
+
 extern uint64_t int_vectors[];
 
 extern "C" {
@@ -147,11 +183,17 @@ void RegisterIntHandler(uint8_t interrupt, isr_t handler) {
 
 extern "C" {
 void irq_handler(uint8_t int_num, RegisterContext regs) {
+    log::debugLine << "Unhandled IRQ" << fmt::endln;
 }
 
 void ipi_handler(uint8_t int_num, RegisterContext regs) {
+    log::debugLine << "Unhandled IPI" << fmt::endln;
 }
 
 void isr_handler(uint8_t int_num, RegisterContext regs) {
+    log::debugLine << "CPU Exception!\n"
+                   << "Exception: " << exceptions[int_num] << '\n'
+                   << "RIP: " << fmt::hex << regs.rip << '\n'
+                   << fmt::endl;
 }
 }
