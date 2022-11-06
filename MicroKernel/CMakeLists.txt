@@ -42,6 +42,7 @@ add_compile_options(-g)
 
 set(KERNEL_SRC
 	src/kernel.cpp
+	src/logger.cpp
 )
 
 set(LIBK_SRC

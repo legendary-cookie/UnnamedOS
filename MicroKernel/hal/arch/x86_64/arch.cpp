@@ -1,4 +1,5 @@
 #include <hal.hpp>
+#include <logger.hpp>
 
 #include "CPU.hpp"
 #include "GDT.hpp"
@@ -23,6 +24,8 @@ void Initialize() {
     asm volatile("mov %0, %%rsp" ::"r"(stack + (PageSize::Size4K * 2))
                  : "memory");
 
+    log::debugLine << "Setting up arch" << fmt::endln;
     CPU::InitializeCpu();
+    log::debugLine << "Set up arch" << fmt::endln;
 }
 }  // namespace hal

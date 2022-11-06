@@ -1,9 +1,11 @@
+#pragma once
+
 #include <drivers/serial.hpp>
 #include <libk++/fmt.hpp>
 
-namespace log {
 namespace fmt_options {
 struct __endl {};
+struct __endln {};
 struct __base {
     int base;
 };
@@ -16,12 +18,14 @@ struct __oct : __base {};
 
 namespace fmt {
 constexpr fmt_options::__endl endl;
+constexpr fmt_options::__endln endln;
 constexpr fmt_options::__bin bin{ 2 };
 constexpr fmt_options::__oct oct{ 8 };
 constexpr fmt_options::__dec dec{ 10 };
 constexpr fmt_options::__hex hex{ 16 };
 }  // namespace fmt
 
+namespace log {
 namespace __writer {
 struct serial {
     void operator()(const char *s) {
@@ -47,6 +51,12 @@ public:
     }
 
     ostream &operator<<(fmt_options::__endl) {
+        flush();
+        return *this;
+    }
+
+    ostream &operator<<(fmt_options::__endln) {
+        vprintf('\n');
         flush();
         return *this;
     }
@@ -78,4 +88,6 @@ private:
 
 // class log : public ostream<__writer::fb> {};
 class dbg : public ostream<__writer::serial> {};
+
+extern dbg debugLine;
 }  // namespace log
